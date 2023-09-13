@@ -7,7 +7,7 @@ Basic steps are:
 - gene prediction and annotation
 - downstream analysis (pangenome, AMR, GWAS, phage)
   
-For this tutorial I am using 4 gonococcal sequences from the NCBI SRA, but this will work with any raw sequences. If you want to download these sequences to work along, I have included instructions under "get_SRA_sequences..." 
+For this tutorial I am using 4 gonococcal sequences from the NCBI SRA, but this will work with any raw sequences. If you want to download these sequences to work along, I have included instructions under SRA_prefetch.md 
 I have included links for all the tools below, as well as everything you will need to run them either on SciNet or on your computer
 ## Preparation 
 We have to load some modules and make some directories on SciNet before we can begin. With that said, in theory none of these scripts should require SciNet, you should be able to run them on your local computer if you can install the tools.

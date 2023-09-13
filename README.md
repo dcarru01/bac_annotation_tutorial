@@ -87,3 +87,34 @@ Going through the actual script we can see various options:
   assemblies/$1.fasta
 ```
 Like I said this barely scratches the surface of the options available so I strongly recommend going through the manual first if you are using this for real.
+## Downstream analysis
+Now that we have annotated genomes we can do whatever we want with them! I will go through a few examples of things and tools I have used, focusing on an in depth comparison of AMR genes in the 4 isolates. There are some links for additional tools I've used at the end as well.
+### Pangenome analysis with Roary
+[Roary](https://sanger-pathogens.github.io/Roary/) is a tool which works well with Prokka, and is designed to create a pangenome for your isolates. In essence, it is a wrapper around mafft and blast which assigns groups genes based on sequence similarity then tracks their presence or absence in your isolates. It isn't the only option, and it isn't perfect but it can be a good starting point!
+
+Running roary is easy once you have finished your analysis from prokka. First we are going to copy all of the gff files from our prokka output into a new directory.
+```
+cp prokka/*/*.gff annotated_gff
+```
+Now we pass these to roary wtih a few options enabled.
+```
+roary -n -e -p 40 -f roary annotated_gff/*.gff
+```
+This tells roary to use PRANK and MAFFT to speed up our core genome alignment, assignes 40 threads, and directs the output to roary. Take a look at the manual for details on the output, but generally speaking the most interesting files are the gene_presence_absence files which will show you which genes are in which isolates. The other useful file is the pan_genome_reference.fa file which contains reference sequences for each gene identified. We will use this for some additional downstream annotation.
+### eggNOG-mapper annotation
+Prokka is good and useful for annotation, but [eggNOG-mapper](http://eggnog-mapper.embl.de/) has certain advantages, including more detailed descriptions, GO terms, integration with KEGG, PFAMs, etc... There is a command line version you can download and set up, but the database is huge so it is a bit of an undertaking getting it all working. I generally use the online tool as long as I fit in the limit.
+
+For this tutorial I will feed in our set of reference genes from the pangenome analysis, but eggNOG-mapper can also be run on individual genomes prior to Prokka using Prodigal for gene discovery, so it is an entirely valid option for that function as well!
+
+We are going to go to download our pan_genome_reference.fa file and feed it to [eggNOG-mapper](http://eggnog-mapper.embl.de/). Select CDs, upload your file and provide your fasta file. I would additionally recommend going to Advanced options -> Annotation options and change GO term annotation to "Transfer all annotations" or you will get very few GO terms. We can take a look at the annotations from the excel sheet and see the additional information.
+### CARD RGI tool for AMR determinants
+The [CARD RGI](https://card.mcmaster.ca/analyze/rgi) (Resitance Gene Identifier) is a tool from McMaster aimed at identifying resistance genes from genome sequences. Again, it can be downloaded and run through the command line, but it is easier for a small number of genomes to just use the online tool which is what we will do.
+
+Let's start by getting the annotated genes from each isolate from the prokka output. We are looking for the .ffn files which contain individual gene sequences (although I believe you can also send in the assemblies or the whole genome sequence). We then upload those to the [RGI](https://card.mcmaster.ca/analyze/rgi) tool and we can check out the resulting annotations.
+### Other downstream analysis tools
+Obviously I can't go through every downstream tool here but I wanted to list a few options/resources here in case you wanted a place to start.
+- Phage gene identification with [PhiSpy](https://github.com/linsalrob/PhiSpy)
+- Bacterial pan-genome wide association studies with [Scoary](https://github.com/AdmiralenOla/Scoary) (designed to use Roary)
+- Bacterial GWAS with [pyseer](https://pyseer.readthedocs.io/en/master/index.html)
+- Sequence typing with [mlst](https://github.com/tseemann/mlst) (only for species in the database)
+- AMR gene identification and typing with [Pathogenwatch](https://pathogen.watch/) (again, depends on the database)

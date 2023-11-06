@@ -11,6 +11,8 @@ For this tutorial I am using 4 gonococcal sequences from the NCBI SRA, but this 
 I have included links for all the tools below, as well as everything you will need to run them either on SciNet or on your computer
 ## Preparation 
 We have to load some modules and make some directories on SciNet before we can begin. With that said, in theory none of these scripts should require SciNet, you should be able to run them on your local computer if you can install the tools.
+
+To install the tools locally, you will need access to a command line. If you are on a Mac or Linux system you're already set, if you're using a Windows computer then I recommend installing [Windows Subsystem for Linux](https://learn.microsoft.com/en-us/windows/wsl/install). Most of these tools can be installed via conda; I recommend [mamba](https://github.com/conda-forge/miniforge) as it cuts down on a lot of the bloat from conda and speeds up installation.
 ```
 module load CCEnv StdEnv/2020 gcc/9.3.0 fastp/0.23.4 spades/3.15.4 prokka/1.14.5 roary/3.13.0
 mkdir acc_files trim report report/html report/json spades assemblies prokka annotated_gff 
